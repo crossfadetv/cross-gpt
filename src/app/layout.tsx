@@ -1,9 +1,12 @@
-import type { Metadata } from "next";
+import { Provider } from "@/components/ui/provider";
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout(props: { children: React.ReactNode }) {
+	const { children } = props;
 	return (
-		<html lang="en">
-			<body>{children}</body>
+		<html suppressHydrationWarning>
+			<body>
+				<Provider>{children}</Provider>
+			</body>
 		</html>
 	);
 }
