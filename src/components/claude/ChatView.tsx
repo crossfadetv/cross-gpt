@@ -1,18 +1,10 @@
 "use client";
 
-import {
-	Box,
-	Flex,
-	HStack,
-	Icon,
-	Image,
-	Spinner,
-	Text,
-	VStack,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Icon, Image, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { LuSparkles } from "react-icons/lu";
 import { userProfile } from "@/data/chatHistory";
+import { timing } from "@/data/scenarios";
 import type { ChatMessage } from "./useChat";
 
 type Props = {
@@ -53,6 +45,73 @@ function UserAvatar() {
 		>
 			{userProfile.initial}
 		</Flex>
+	);
+}
+
+function GeneratingImage({
+	src,
+	alt,
+	pending,
+}: {
+	src: string;
+	alt: string;
+	pending: boolean;
+}) {
+	// Dauer, über die der Blur abgebaut wird. Nutzt denselben Wert wie
+	// die simulierte Generierung, damit es synchron läuft.
+	const durationMs = timing.imageGenerationDelayMs;
+
+	return (
+		<Box position="relative" w="full" minH="200px" overflow="hidden">
+			<Image
+				src={src}
+				alt={alt}
+				w="full"
+				h="auto"
+				display="block"
+				style={{
+					filter: pending
+						? "blur(28px) saturate(1.4) brightness(0.75)"
+						: "blur(0px) saturate(1) brightness(1)",
+					transform: pending ? "scale(1.08)" : "scale(1)",
+					transition: `filter ${durationMs}ms ease-out, transform ${durationMs}ms ease-out`,
+					willChange: "filter, transform",
+				}}
+			/>
+			{/* Schimmer-Überlagerung während der "Generierung" */}
+			<Box
+				position="absolute"
+				inset="0"
+				pointerEvents="none"
+				style={{
+					opacity: pending ? 1 : 0,
+					transition: `opacity ${Math.round(durationMs / 2)}ms ease-out`,
+					background:
+						"linear-gradient(110deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 70%)",
+					backgroundSize: "200% 100%",
+					animation: pending ? "shimmer 1.6s linear infinite" : undefined,
+				}}
+			/>
+			{/* Dezentes Label während der Generierung */}
+			{pending && (
+				<Flex
+					position="absolute"
+					bottom="2"
+					left="2"
+					align="center"
+					gap="2"
+					px="2"
+					py="1"
+					rounded="md"
+					bg="blackAlpha.600"
+					color="gray.100"
+					fontSize="xs"
+				>
+					<Icon as={LuSparkles} boxSize="3" color="orange.300" />
+					<Text>Generiere Bild …</Text>
+				</Flex>
+			)}
+		</Box>
 	);
 }
 
@@ -98,40 +157,22 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 						w="full"
 						bg="#1f1f1e"
 					>
-						{message.imagePending ? (
-							<Flex
-								align="center"
-								justify="center"
-								direction="column"
-								gap="3"
-								h="260px"
-								color="gray.400"
+						<GeneratingImage
+							src={message.imageUrl}
+							alt={message.imageCaption ?? "Generiertes Bild"}
+							pending={Boolean(message.imagePending)}
+						/>
+						{message.imageCaption && (
+							<Text
+								fontSize="xs"
+								color="gray.500"
+								px="3"
+								py="2"
+								borderTopWidth="1px"
+								borderColor="whiteAlpha.100"
 							>
-								<Spinner size="sm" />
-								<Text fontSize="xs">Bild wird generiert …</Text>
-							</Flex>
-						) : (
-							<>
-								<Image
-									src={message.imageUrl}
-									alt={message.imageCaption ?? "Generiertes Bild"}
-									w="full"
-									h="auto"
-									display="block"
-								/>
-								{message.imageCaption && (
-									<Text
-										fontSize="xs"
-										color="gray.500"
-										px="3"
-										py="2"
-										borderTopWidth="1px"
-										borderColor="whiteAlpha.100"
-									>
-										{message.imageCaption}
-									</Text>
-								)}
-							</>
+								{message.imageCaption}
+							</Text>
 						)}
 					</Box>
 				)}

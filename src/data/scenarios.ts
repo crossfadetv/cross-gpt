@@ -21,25 +21,14 @@ export type AssistantMessageContent = {
 // -------------------------------------------------------------------------
 export const scriptedResponses: AssistantMessageContent[] = [
 	{
-		text: "Klar, ich helfe dir gerne. Erzähl mir mehr über dein Projekt.",
-	},
-	{
-		text: "Spannend! Hier sind drei erste Ideen, mit denen wir arbeiten können:\n\n1. Ein ruhiger, atmosphärischer Einstieg\n2. Ein harter Schnitt mitten in die Action\n3. Eine Rückblende aus Sicht einer Nebenfigur\n\nWelche Richtung spricht dich an?",
-	},
-	{
 		text: "Perfekt. Ich entwerfe dir dazu ein Stimmungsbild – einen Moment bitte, ich generiere es für dich.",
-		imageUrl:
-			"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
-		imageCaption: "Generiert mit CrossGPT · Stimmungsbild",
-	},
-	{
-		text: 'Was den Dialog betrifft: Halte die ersten Sätze kurz. Der Protagonist sollte nicht erklären, sondern andeuten. Zum Beispiel: "Du bist zu spät." – "Ich weiß."',
+		imageUrl: "/ai.jpg",
+		imageCaption: "Generiert mit CrossGPT",
 	},
 	{
 		text: "Hier noch eine zweite Bildvariante, falls dir die erste zu düster war:",
-		imageUrl:
-			"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&q=80",
-		imageCaption: "Generiert mit CrossGPT · Alternative",
+		imageUrl: "/real.jpg",
+		imageCaption: "Generiert mit CrossGPT",
 	},
 	{
 		text: "Zusammengefasst: Wir haben Ton, Bild und Dialog grob skizziert. Soll ich daraus ein kurzes Treatment formulieren, das du deinem Team zeigen kannst?",
