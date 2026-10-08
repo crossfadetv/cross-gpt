@@ -19,14 +19,13 @@ export const sidebarPinned: ChatEntry[] = [
 
 export const chatHistory: ChatEntry[] = [
 	{ id: "1", title: "Suche nach Hippie" },
-	{ id: "2", title: "Kameraeinstellungen" },
-	{ id: "3", title: "Rechercheliste: Zeitgeist der 80er" },
-	{ id: "4", title: "Charakterprofil" },
-	{ id: "5", title: "Locations in Berlin für Außenaufnahmen" },
-	{ id: "6", title: "Budgetplanung Staffel 1" },
-	{ id: "7", title: "Soundtrack-Ideen für die Eröffnungsszene" },
-	{ id: "8", title: "Kostümreferenzen Film Noir" },
-	{ id: "9", title: "Produktionsplan KW 42" },
+	{ id: "2", title: "Blut erkennen" },
+	{ id: "3", title: "Freunde für Einhorn suchen" },
+	{ id: "4", title: "Tiere mit 2 Hörnern" },
+	{ id: "5", title: "UFO Baupläne" },
+	{ id: "6", title: "Glaubwürdigkeit Markus Brunner" },
+	{ id: "7", title: "Bedeutung 67" },
+	{ id: "8", title: "Grossmeister Fanclub" },
 ];
 
 export const userProfile = {
@@ -39,7 +38,7 @@ export const appInfo = {
 	appName: "CrossGPT",
 	greeting: "Guten Abend",
 	modelName: "Crossus 5.7",
-	modelTier: "Medium",
+	modelTier: "High",
 	planLabel: "Gratis-Tarif",
 	upgradeLabel: "Upgrade",
 };

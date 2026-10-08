@@ -1,7 +1,7 @@
 "use client";
 
-import { Flex, HStack, Icon, Text, VStack } from "@chakra-ui/react";
-import { LuMessageCircle, LuSparkles } from "react-icons/lu";
+import { Flex, HStack, Icon, Image, Text, VStack } from "@chakra-ui/react";
+import { LuMessageCircle } from "react-icons/lu";
 import { appInfo, userProfile } from "@/data/chatHistory";
 import { ChatInput } from "./ChatInput";
 import { ChatView } from "./ChatView";
@@ -66,7 +66,12 @@ export function MainArea() {
 				>
 					<VStack gap="8" w="full" maxW="720px">
 						<HStack gap="3">
-							<Icon as={LuSparkles} boxSize="7" color="orange.400" />
+							<Image
+								src="/red-dot-transparent.png"
+								alt="CrossGPT"
+								boxSize="8"
+								objectFit="contain"
+							/>
 							<Text fontSize="3xl" fontWeight="light" color="gray.100">
 								{appInfo.greeting}, {userProfile.name}
 							</Text>

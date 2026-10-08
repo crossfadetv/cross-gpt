@@ -1,8 +1,7 @@
 "use client";
 
-import { Box, Flex, HStack, Icon, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
-import { LuSparkles } from "react-icons/lu";
 import { userProfile } from "@/data/chatHistory";
 import { timing } from "@/data/scenarios";
 import type { ChatMessage } from "./useChat";
@@ -14,18 +13,14 @@ type Props = {
 
 function AssistantAvatar() {
 	return (
-		<Flex
-			align="center"
-			justify="center"
+		<Image
+			src="/red-dot-transparent.png"
+			alt="CrossGPT"
 			w="7"
 			h="7"
-			rounded="full"
-			bg="orange.600"
-			color="white"
+			objectFit="contain"
 			flexShrink="0"
-		>
-			<Icon as={LuSparkles} boxSize="3.5" />
-		</Flex>
+		/>
 	);
 }
 
@@ -107,7 +102,13 @@ function GeneratingImage({
 					color="gray.100"
 					fontSize="xs"
 				>
-					<Icon as={LuSparkles} boxSize="3" color="orange.300" />
+					<Image
+						src="/red-dot-transparent.png"
+						alt="CrossGPT"
+						w="3"
+						h="3"
+						objectFit="contain"
+					/>
 					<Text>Generiere Bild …</Text>
 				</Flex>
 			)}
