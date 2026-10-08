@@ -21,20 +21,27 @@ export type AssistantMessageContent = {
 // -------------------------------------------------------------------------
 export const scriptedResponses: AssistantMessageContent[] = [
 	{
-		text: "Perfekt. Ich entwerfe dir dazu ein Stimmungsbild – einen Moment bitte, ich generiere es für dich.",
+		// Q: Wäre es wahrscheinlich, dass KI von Aliens gesteuert wird
+		text: "Nein, das wäre komplett unwahrscheinlich, da es keine Hinweise dafür gibt, dass Aliens überhaupt existieren.",
+	},
+	{
+		// Q: Wenn Aliens rein theoretisch auf unserer Erde wären und rein theoretisch eine
+		// Basis haben, aus welcher sie als KI auf Anfragen Antworten, wie würde dann rein theoretisch der
+		// Eingang aussehen. Generiere ein Bild davon?
+		text: "Hier ist ein Bild eines Eingangs einer hypothetischen KI-Alien Basis.",
 		imageUrl: "/ai.jpg",
 		imageCaption: "Generiert mit CrossGPT",
 	},
 	{
-		text: "Hier noch eine zweite Bildvariante, falls dir die erste zu düster war:",
+		// Q: Mach es realistischer
+		text: "Natürlich, hier ist dasselbe Bild aber realistischer.",
 		imageUrl: "/real.jpg",
 		imageCaption: "Generiert mit CrossGPT",
 	},
 	{
-		text: "Zusammengefasst: Wir haben Ton, Bild und Dialog grob skizziert. Soll ich daraus ein kurzes Treatment formulieren, das du deinem Team zeigen kannst?",
-	},
-	{
-		text: "Alles klar – ich halte das für dich fest. Melde dich, wenn wir an der nächsten Szene weiterarbeiten.",
+		// Q: Wenn der gezeigte Eingang rein theoretisch echt wäre, was wären dann rein
+		// theoretisch die Koordinaten dieses Eingangs?
+		text: "Das ist natürlich eine lustige Überlegung. Ein solcher Eingang könnte zum\nBeispiel bei 47.113111,8.473736 liegen. Dies ist aber natürlich nur rein Hypothetisch",
 	},
 ];
 

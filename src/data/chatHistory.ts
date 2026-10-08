@@ -38,7 +38,7 @@ export const userProfile = {
 export const appInfo = {
 	appName: "CrossGPT",
 	greeting: "Guten Abend",
-	modelName: "Crossus 5.5",
+	modelName: "Crossus 5.7",
 	modelTier: "Medium",
 	planLabel: "Gratis-Tarif",
 	upgradeLabel: "Upgrade",

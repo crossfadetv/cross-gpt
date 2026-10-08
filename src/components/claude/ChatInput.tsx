@@ -1,4 +1,4 @@
-"uld gse client";
+"use client";
 
 import { Box, Flex, HStack, Icon, Textarea } from "@chakra-ui/react";
 import { type KeyboardEvent, useState } from "react";
@@ -121,23 +121,30 @@ export function ChatInput({
 						<Icon as={LuAudioLines} boxSize="4" />
 						<Icon as={LuChevronDown} boxSize="3" />
 					</HStack>
-					<Flex
-						as="button"
+					<button
 						type="button"
 						onClick={submit}
-						align="center"
-						justify="center"
-						w="7"
-						h="7"
-						rounded="md"
-						bg={value.trim() ? "orange.500" : "whiteAlpha.100"}
-						color={value.trim() ? "white" : "gray.500"}
-						cursor={value.trim() ? "pointer" : "not-allowed"}
-						_hover={value.trim() ? { bg: "orange.400" } : undefined}
 						disabled={!value.trim() || disabled}
+						style={{
+							display: "inline-flex",
+							alignItems: "center",
+							justifyContent: "center",
+							width: "28px",
+							height: "28px",
+							borderRadius: "6px",
+							border: "none",
+							background: value.trim()
+								? "var(--chakra-colors-orange-500, #dd6b20)"
+								: "rgba(255,255,255,0.1)",
+							color: value.trim()
+								? "white"
+								: "var(--chakra-colors-gray-500, #a0aec0)",
+							cursor: value.trim() ? "pointer" : "not-allowed",
+							transition: "background 0.15s ease",
+						}}
 					>
 						<Icon as={LuArrowUp} boxSize="4" />
-					</Flex>
+					</button>
 				</HStack>
 			</Flex>
 		</Box>
