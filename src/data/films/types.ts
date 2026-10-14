@@ -51,6 +51,7 @@ export type Film = {
 	appInfo: {
 		appName: string;
 		greeting: string;
+		quote?: string; // optionaler Satz unter der Begrüßung
 		modelName: string;
 		modelTier: string;
 		planLabel: string;

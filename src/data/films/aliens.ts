@@ -69,9 +69,10 @@ export const aliens: Film = {
 
 	appInfo: {
 		appName: "CrossGPT",
-		greeting: "Guten Abend",
-		modelName: "Crossus 5.7",
-		modelTier: "High",
+		greeting: "Guten Morgen",
+		quote: "Lass uns gemeinsam die Welt erobern!",
+		modelName: "Cortyceps 5.7",
+		modelTier: "fast",
 		planLabel: "Gratis-Tarif",
 		upgradeLabel: "Upgrade",
 	},

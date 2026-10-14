@@ -8,6 +8,10 @@ import { useFilm } from "./FilmContext";
 import { QuickActions } from "./QuickActions";
 import { useChat } from "./useChat";
 
+// Vergrößert Startbereich und Chat gleichmäßig – wirkt im Film besser.
+// Sidebar und Top-Bar bleiben unverändert.
+const contentZoom = 1.25;
+
 export function MainArea() {
 	const { appInfo, userProfile } = useFilm();
 	const { messages, isTyping, send } = useChat();
@@ -48,8 +52,14 @@ export function MainArea() {
 
 			{hasMessages ? (
 				<>
-					<ChatView messages={messages} isTyping={isTyping} />
-					<Flex justify="center" px="6" pb="6" flexShrink="0">
+					<ChatView messages={messages} isTyping={isTyping} zoom={contentZoom} />
+					<Flex
+						justify="center"
+						px="6"
+						pb="6"
+						flexShrink="0"
+						style={{ zoom: contentZoom }}
+					>
 						<ChatInput
 							onSend={send}
 							placeholder="Antwort an CrossGPT ..."
@@ -65,18 +75,30 @@ export function MainArea() {
 					justify="center"
 					px="6"
 				>
-					<VStack gap="8" w="full" maxW="720px">
-						<HStack gap="3">
-							<Image
-								src="/app/red-dot.png"
-								alt="CrossGPT"
-								boxSize="8"
-								objectFit="contain"
-							/>
-							<Text fontSize="3xl" fontWeight="light" color="gray.100">
-								{appInfo.greeting}, {userProfile.name}
-							</Text>
-						</HStack>
+					<VStack gap="8" w="full" maxW="720px" style={{ zoom: contentZoom }}>
+						<VStack gap="3">
+							<HStack gap="4">
+								<Image
+									src="/app/red-dot.png"
+									alt="CrossGPT"
+									boxSize="12"
+									objectFit="contain"
+								/>
+								<Text
+									fontSize="5xl"
+									fontWeight="light"
+									color="gray.100"
+									lineHeight="1.1"
+								>
+									{appInfo.greeting}, {userProfile.name}
+								</Text>
+							</HStack>
+							{appInfo.quote && (
+								<Text fontSize="xl" color="gray.400" textAlign="center">
+									{appInfo.quote}
+								</Text>
+							)}
+						</VStack>
 
 						<ChatInput onSend={send} />
 

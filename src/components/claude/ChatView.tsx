@@ -8,6 +8,7 @@ import type { ChatMessage } from "./useChat";
 type Props = {
 	messages: ChatMessage[];
 	isTyping: boolean;
+	zoom?: number;
 };
 
 // `active` = CrossGPT denkt, schreibt oder generiert gerade → Punkt blinkt.
@@ -227,7 +228,7 @@ function TypingIndicator() {
 	);
 }
 
-export function ChatView({ messages, isTyping }: Props) {
+export function ChatView({ messages, isTyping, zoom = 1 }: Props) {
 	const bottomRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -244,6 +245,7 @@ export function ChatView({ messages, isTyping }: Props) {
 				mx="auto"
 				px="6"
 				py="8"
+				style={{ zoom }}
 			>
 				{messages.map((m) => (
 					<MessageBubble key={m.id} message={m} />
