@@ -1,62 +1,80 @@
-# CrossGPT
+# CrossGPT – Film-Requisite
 
-Fiktive KI-Chat-Oberfläche als Film-Requisite, für Bildschirmaufnahmen mit OBS.
+Eine **fiktive KI-Chat-Oberfläche** für Bildschirmaufnahmen in Filmen (z.B. mit OBS).
+Egal was die Figur vor der Kamera eintippt: CrossGPT antwortet mit den Antworten, die im Drehbuch stehen,
+Wort für Wort „gestreamt“ und auf Wunsch mit „generierten“ Bildern.
+Antworten, Chat-Verlauf, Benutzer und Begrüßung werden pro Film in einer einzigen Datei festgelegt.
 
-## Film starten
+*A fictional AI chat interface used as an on-screen prop for film productions. German UI, scripted answers, configurable per film.*
+
+![Startseite von CrossGPT im Film „Aliens“](docs/screenshot-start.jpg)
+
+![Chat mit „generiertem“ Bild](docs/screenshot-chat.jpg)
+
+## Funktionen
+
+- **Gescriptete Antworten:** Beim ersten Senden kommt Antwort 1, beim zweiten Antwort 2 usw., unabhängig vom eingetippten Text
+- **Lebendig wirkender Chat:** Denkpause, Text erscheint Wort für Wort, Bilder werden mit Lade-Effekt „generiert“, der rote Punkt blinkt, solange CrossGPT antwortet
+- **Pro Film konfigurierbar:** Antworten, Bilder, Timing, Chat-Verlauf in der Sidebar, Benutzername, Begrüßung, Spruch, Modellname
+- **Für Aufnahmen optimiert:** vergrößerte Darstellung, dezenter Hintergrund statt leerer Flächen, keine Entwickler-Einblendungen
+- **F5 = neuer Take:** Nach dem Neuladen beginnen die Antworten wieder von vorne
+
+## Starten
+
+Voraussetzung: [Node.js](https://nodejs.org) 20 oder neuer.
 
 ```bash
 npm install   # einmalig
 npm run dev
 ```
 
-Dann im Browser öffnen: `http://localhost:3000/?film=<filmname>`, z.B. `http://localhost:3000/?film=aliens`.
+Dann im Browser öffnen: `http://localhost:3000/?film=aliens`
 Ohne `?film=` wird der Standardfilm aus `src/data/films/index.ts` geladen.
-
-Vor jedem Take die Seite neu laden (F5), dann beginnen die Antworten wieder von vorne.
+Läuft auf Port 3000 und kann gleichzeitig mit dem Videoportal (Port 3001) laufen.
 
 ## Neuen Film anlegen
 
-1. `src/data/films/aliens.ts` kopieren, z.B. nach `meinfilm.ts`.
-2. Antworten (`scriptedResponses`), Timing, Sidebar-Verlauf, Benutzername usw. anpassen.
-   Bilder kommen nach `public/films/meinfilm/` und werden mit `/films/meinfilm/bild.jpg` referenziert.
-3. In `src/data/films/index.ts` importieren und in `films` eintragen.
+1. `src/data/films/aliens.ts` kopieren, z.B. nach `meinfilm.ts`, und die Parameter anpassen (siehe unten).
+2. Bilder nach `public/films/meinfilm/` legen und mit `/films/meinfilm/bild.jpg` referenzieren.
+3. Den Film in `src/data/films/index.ts` importieren und in `films` eintragen.
 4. Aufrufen mit `http://localhost:3000/?film=meinfilm`.
 
----
+Tipp: Für denselben Film im Videoportal denselben Namen verwenden, dann passt `?film=` in beiden Requisiten.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Parameter einer Film-Datei
 
-## Getting Started
+| Parameter | Bedeutung |
+|---|---|
+| `title` | Name der Produktion, nur zur Orientierung |
+| `scriptedResponses` | Liste der Antworten in Reihenfolge; jede mit `text`, `imageUrl` und/oder `imageCaption` |
+| `loopWhenDone` | `true` = nach der letzten Antwort diese wiederholen |
+| `timing.typingDelayMs` | Denkpause vor einer Antwort in ms, z.B. `900` |
+| `timing.imageGenerationDelayMs` | Dauer der Bild-„Generierung“ in ms, z.B. `2200` |
+| `timing.wordStreamIntervalMs` | Pause zwischen zwei Wörtern in ms, z.B. `55`; höher = langsamer |
+| `background` | Hintergrund, `"dots"` (Standard, Punktraster mit rotem Leuchten) oder `"plain"` |
+| `sidebarPinned` | Angeheftete Einträge oben in der Sidebar, je mit `id`, `title`, optional `badge` |
+| `chatHistory` | Frühere Chats in der Sidebar, je mit `id` und `title` |
+| `userProfile` | `initial`, `name` und `plan` des Benutzers, z.B. `"B"`, `"Ben"`, `"Gratis"` |
+| `appInfo.appName` | Name der App, z.B. `"CrossGPT"` |
+| `appInfo.greeting` | Begrüßung, z.B. `"Guten Morgen"` → „Guten Morgen, Ben“ |
+| `appInfo.quote` | Optionaler Spruch unter der Begrüßung |
+| `appInfo.modelName` / `modelTier` | Modellanzeige im Eingabefeld, z.B. `"Cortyceps 5.7"` / `"fast"` |
+| `appInfo.planLabel` / `upgradeLabel` | Texte oben in der Mitte, z.B. `"Gratis-Tarif"` / `"Upgrade"` |
 
-First, run the development server:
+## Tipps für die Aufnahme
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Eigenes Browserprofil ohne Erweiterungen** verwenden. Passwortmanager & Co. blenden sonst Symbole ins Eingabefeld ein.
+- **Browser-Zoom 100 %** und Vollbild (F11).
+- Vor jedem Take **F5**, danach kurz warten, bevor ins Eingabefeld geklickt wird.
+- Die Gesamtgröße stellt `contentZoom` in `src/components/claude/MainArea.tsx` ein (Standard 1.25).
+- Den Text schneller oder langsamer erscheinen lassen: `timing.wordStreamIntervalMs` in der Film-Datei.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Hinweis
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Alle Namen, Chats und Inhalte sind **frei erfunden**. CrossGPT steht in keiner Verbindung zu einem
+real existierenden KI-Anbieter.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Credits
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ursprünglich entwickelt von [Ratzifutzi](https://github.com/Ratzifutzi) während eines Filmlagers,
+weiterentwickelt von [crossfadetv](https://github.com/crossfadetv).
