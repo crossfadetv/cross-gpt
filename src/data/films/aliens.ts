@@ -42,6 +42,8 @@ export const aliens: Film = {
 		wordStreamIntervalMs: 55,
 	},
 
+	background: "dots",
+
 	sidebarPinned: [
 		{
 			id: "customize-crossgpt",

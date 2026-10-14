@@ -1,6 +1,8 @@
 // Typen für eine Film-Konfiguration. Jeder Film in `src/data/films/`
 // exportiert ein Objekt vom Typ `Film`.
 
+import type { BackgroundId } from "../backgrounds";
+
 export type AssistantMessageContent = {
 	text?: string;
 	imageUrl?: string;
@@ -39,6 +41,9 @@ export type Film = {
 	// ---------------------------------------------------------------------
 	// Sidebar & Oberfläche
 	// ---------------------------------------------------------------------
+	// Hintergrundmuster, siehe src/data/backgrounds.ts (Standard: "dots")
+	background?: BackgroundId;
+
 	sidebarPinned: ChatEntry[]; // steht ganz oben in der Sidebar
 	chatHistory: ChatEntry[];
 

@@ -2,6 +2,7 @@
 
 import { Flex, HStack, Icon, Image, Text, VStack } from "@chakra-ui/react";
 import { LuMessageCircle } from "react-icons/lu";
+import { backgrounds } from "@/data/backgrounds";
 import { ChatInput } from "./ChatInput";
 import { ChatView } from "./ChatView";
 import { useFilm } from "./FilmContext";
@@ -13,7 +14,7 @@ import { useChat } from "./useChat";
 const contentZoom = 1.25;
 
 export function MainArea() {
-	const { appInfo, userProfile } = useFilm();
+	const { appInfo, userProfile, background } = useFilm();
 	const { messages, isTyping, send } = useChat();
 	const hasMessages = messages.length > 0;
 
@@ -24,6 +25,7 @@ export function MainArea() {
 			h="100vh"
 			bg="#262624"
 			position="relative"
+			style={backgrounds[background ?? "dots"]}
 		>
 			{/* Top bar */}
 			<Flex
