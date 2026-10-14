@@ -2,8 +2,7 @@
 
 import { Box, Flex, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
-import { userProfile } from "@/data/chatHistory";
-import { timing } from "@/data/scenarios";
+import { useFilm } from "./FilmContext";
 import type { ChatMessage } from "./useChat";
 
 type Props = {
@@ -11,7 +10,8 @@ type Props = {
 	isTyping: boolean;
 };
 
-function AssistantAvatar() {
+// `active` = CrossGPT denkt, schreibt oder generiert gerade → Punkt blinkt.
+function AssistantAvatar({ active = false }: { active?: boolean }) {
 	return (
 		<Image
 			src="/red-dot-transparent.png"
@@ -20,11 +20,13 @@ function AssistantAvatar() {
 			h="7"
 			objectFit="contain"
 			flexShrink="0"
+			animation={active ? "dotBlink 1s ease-in-out infinite" : undefined}
 		/>
 	);
 }
 
 function UserAvatar() {
+	const { userProfile } = useFilm();
 	return (
 		<Flex
 			align="center"
@@ -54,7 +56,7 @@ function GeneratingImage({
 }) {
 	// Dauer, über die der Blur abgebaut wird. Nutzt denselben Wert wie
 	// die simulierte Generierung, damit es synchron läuft.
-	const durationMs = timing.imageGenerationDelayMs;
+	const durationMs = useFilm().timing.imageGenerationDelayMs;
 
 	return (
 		<Box position="relative" w="full" minH="200px" overflow="hidden">
@@ -117,10 +119,17 @@ function GeneratingImage({
 }
 
 function MessageBubble({ message }: { message: ChatMessage }) {
+	const { userProfile } = useFilm();
 	const isUser = message.role === "user";
 	return (
 		<HStack align="flex-start" gap="3" w="full">
-			{isUser ? <UserAvatar /> : <AssistantAvatar />}
+			{isUser ? (
+				<UserAvatar />
+			) : (
+				<AssistantAvatar
+					active={Boolean(message.streaming || message.imagePending)}
+				/>
+			)}
 			<VStack align="flex-start" gap="2" flex="1" minW="0">
 				<Text fontSize="sm" color="gray.400" fontWeight="semibold">
 					{isUser ? userProfile.name : "CrossGPT"}
@@ -185,7 +194,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 function TypingIndicator() {
 	return (
 		<HStack align="flex-start" gap="3" w="full">
-			<AssistantAvatar />
+			<AssistantAvatar active />
 			<VStack align="flex-start" gap="2" flex="1">
 				<Text fontSize="sm" color="gray.400" fontWeight="semibold">
 					CrossGPT

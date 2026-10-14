@@ -14,12 +14,8 @@ import {
 	LuSlidersHorizontal,
 	LuSparkles,
 } from "react-icons/lu";
-import {
-	type ChatEntry,
-	chatHistory,
-	sidebarPinned,
-	userProfile,
-} from "@/data/chatHistory";
+import type { ChatEntry } from "@/data/films/types";
+import { useFilm } from "./FilmContext";
 
 type NavItem = {
 	icon: React.ElementType;
@@ -112,6 +108,7 @@ function ChatRow({ entry }: { entry: ChatEntry }) {
 }
 
 export function Sidebar() {
+	const { sidebarPinned, chatHistory, userProfile } = useFilm();
 	return (
 		<Flex
 			direction="column"

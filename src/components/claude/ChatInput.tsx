@@ -9,7 +9,7 @@ import {
 	LuMic,
 	LuPlus,
 } from "react-icons/lu";
-import { appInfo } from "@/data/chatHistory";
+import { useFilm } from "./FilmContext";
 
 type Props = {
 	onSend: (text: string) => void;
@@ -22,6 +22,7 @@ export function ChatInput({
 	placeholder = "Wie kann ich dir heute helfen?",
 	disabled,
 }: Props) {
+	const { appInfo } = useFilm();
 	const [value, setValue] = useState("");
 
 	const submit = () => {

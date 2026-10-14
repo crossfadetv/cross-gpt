@@ -1,3 +1,29 @@
+# CrossGPT
+
+Fiktive KI-Chat-Oberfläche als Film-Requisite, für Bildschirmaufnahmen mit OBS.
+
+## Film starten
+
+```bash
+npm install   # einmalig
+npm run dev
+```
+
+Dann im Browser öffnen: `http://localhost:3000/?film=<filmname>`, z.B. `http://localhost:3000/?film=aliens`.
+Ohne `?film=` wird der Standardfilm aus `src/data/films/index.ts` geladen.
+
+Vor jedem Take die Seite neu laden (F5), dann beginnen die Antworten wieder von vorne.
+
+## Neuen Film anlegen
+
+1. `src/data/films/aliens.ts` kopieren, z.B. nach `meinfilm.ts`.
+2. Antworten (`scriptedResponses`), Timing, Sidebar-Verlauf, Benutzername usw. anpassen.
+   Bilder kommen nach `public/` und werden mit `/dateiname.jpg` referenziert.
+3. In `src/data/films/index.ts` importieren und in `films` eintragen.
+4. Aufrufen mit `http://localhost:3000/?film=meinfilm`.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -1,12 +1,8 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import {
-	type AssistantMessageContent,
-	loopWhenDone,
-	scriptedResponses,
-	timing,
-} from "@/data/scenarios";
+import type { AssistantMessageContent } from "@/data/films/types";
+import { useFilm } from "./FilmContext";
 
 export type ChatMessage = {
 	id: string;
@@ -25,6 +21,7 @@ function makeId() {
 }
 
 export function useChat() {
+	const { scriptedResponses, loopWhenDone, timing } = useFilm();
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
 	const [isTyping, setIsTyping] = useState(false);
 	const responseIndex = useRef(0);
@@ -39,7 +36,7 @@ export function useChat() {
 			return scriptedResponses[scriptedResponses.length - 1];
 		}
 		return { text: "..." };
-	}, []);
+	}, [scriptedResponses, loopWhenDone]);
 
 	const send = useCallback(
 		(text: string) => {
@@ -143,7 +140,7 @@ export function useChat() {
 				}
 			}, initialDelay);
 		},
-		[pickNextResponse],
+		[pickNextResponse, timing],
 	);
 
 	const reset = useCallback(() => {

@@ -2,13 +2,14 @@
 
 import { Flex, HStack, Icon, Image, Text, VStack } from "@chakra-ui/react";
 import { LuMessageCircle } from "react-icons/lu";
-import { appInfo, userProfile } from "@/data/chatHistory";
 import { ChatInput } from "./ChatInput";
 import { ChatView } from "./ChatView";
+import { useFilm } from "./FilmContext";
 import { QuickActions } from "./QuickActions";
 import { useChat } from "./useChat";
 
 export function MainArea() {
+	const { appInfo, userProfile } = useFilm();
 	const { messages, isTyping, send } = useChat();
 	const hasMessages = messages.length > 0;
 
