@@ -18,7 +18,7 @@ Vor jedem Take die Seite neu laden (F5), dann beginnen die Antworten wieder von 
 
 1. `src/data/films/aliens.ts` kopieren, z.B. nach `meinfilm.ts`.
 2. Antworten (`scriptedResponses`), Timing, Sidebar-Verlauf, Benutzername usw. anpassen.
-   Bilder kommen nach `public/` und werden mit `/dateiname.jpg` referenziert.
+   Bilder kommen nach `public/films/meinfilm/` und werden mit `/films/meinfilm/bild.jpg` referenziert.
 3. In `src/data/films/index.ts` importieren und in `films` eintragen.
 4. Aufrufen mit `http://localhost:3000/?film=meinfilm`.
 

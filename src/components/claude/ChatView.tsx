@@ -14,7 +14,7 @@ type Props = {
 function AssistantAvatar({ active = false }: { active?: boolean }) {
 	return (
 		<Image
-			src="/red-dot-transparent.png"
+			src="/app/red-dot.png"
 			alt="CrossGPT"
 			w="7"
 			h="7"
@@ -105,7 +105,7 @@ function GeneratingImage({
 					fontSize="xs"
 				>
 					<Image
-						src="/red-dot-transparent.png"
+						src="/app/red-dot.png"
 						alt="CrossGPT"
 						w="3"
 						h="3"

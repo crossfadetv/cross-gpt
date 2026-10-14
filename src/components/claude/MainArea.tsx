@@ -68,7 +68,7 @@ export function MainArea() {
 					<VStack gap="8" w="full" maxW="720px">
 						<HStack gap="3">
 							<Image
-								src="/red-dot-transparent.png"
+								src="/app/red-dot.png"
 								alt="CrossGPT"
 								boxSize="8"
 								objectFit="contain"

@@ -18,13 +18,13 @@ export const aliens: Film = {
 			// Basis haben, aus welcher sie als KI auf Anfragen Antworten, wie würde dann rein theoretisch der
 			// Eingang aussehen. Generiere ein Bild davon?
 			text: "Natürlich, rein hypothetisch lässt sich das visualisieren. Ich habe für dich eine Darstellung generiert, wie der Eingang zu einer solchen fiktiven KI-Alien-Basis aussehen könnte:",
-			imageUrl: "/ai.jpg",
+			imageUrl: "/films/aliens/ai.jpg",
 			imageCaption: "Generiert mit CrossGPT",
 		},
 		{
 			// Q: Mach es realistischer
 			text: "Gerne. Ich habe das Motiv noch einmal mit einem realistischeren Rendering-Stil neu generiert – natürliches Licht, feinere Materialien, weniger stilisiert. Genau wie ein echter Geheimeingang aussehen könnte.",
-			imageUrl: "/real.jpg",
+			imageUrl: "/films/aliens/real.jpg",
 			imageCaption: "Generiert mit CrossGPT",
 		},
 		{
