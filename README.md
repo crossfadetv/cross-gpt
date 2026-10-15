@@ -78,3 +78,7 @@ real existierenden KI-Anbieter.
 
 Ursprünglich entwickelt von [Ratzifutzi](https://github.com/Ratzifutzi) während eines Filmlagers,
 weiterentwickelt von [crossfadetv](https://github.com/crossfadetv).
+
+## Lizenz
+
+[MIT](LICENSE)
