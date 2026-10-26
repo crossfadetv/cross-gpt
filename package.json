@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "next dev --webpack",
+		"dev:film": "next dev --webpack --port 443 --experimental-https --experimental-https-key certificates/cross-gpt-key.pem --experimental-https-cert certificates/cross-gpt.pem",
 		"build": "next build --webpack",
 		"start": "next start",
 		"lint": "biome check",

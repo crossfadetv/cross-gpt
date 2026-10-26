@@ -1,12 +1,26 @@
 import { Flex } from "@chakra-ui/react";
+import type { Metadata } from "next";
 import { FilmProvider } from "@/components/claude/FilmContext";
 import { MainArea } from "@/components/claude/MainArea";
 import { Sidebar } from "@/components/claude/Sidebar";
 import { defaultFilmId, films } from "@/data/films";
 
-export default async function Home(props: PageProps<"/">) {
+async function resolveFilmId(props: PageProps<"/">) {
 	const { film } = await props.searchParams;
-	const filmId = typeof film === "string" ? film : defaultFilmId;
+	return typeof film === "string" ? film : defaultFilmId;
+}
+
+// Tab-Titel = App-Name des Films (z.B. "CrossGPT"), damit im Browser-Tab
+// nicht die nackte Adresse steht.
+export async function generateMetadata(
+	props: PageProps<"/">,
+): Promise<Metadata> {
+	const filmId = await resolveFilmId(props);
+	return { title: films[filmId]?.appInfo.appName ?? "Unbekannter Film" };
+}
+
+export default async function Home(props: PageProps<"/">) {
+	const filmId = await resolveFilmId(props);
 
 	if (!films[filmId]) {
 		return (

@@ -17,7 +17,7 @@ Antworten, Chat-Verlauf, Benutzer und Begrüßung werden pro Film in einer einzi
 - **Vorgefertigte Prompts (optional):** Enter im leeren Eingabefeld tippt den hinterlegten Prompt wie von Hand ein, ein zweites Enter sendet. Selbst tippen geht weiterhin
 - **Lebendig wirkender Chat:** Denkpause, Text erscheint Wort für Wort, Bilder werden mit Lade-Effekt „generiert“, der rote Punkt blinkt, solange CrossGPT antwortet
 - **Pro Film konfigurierbar:** Antworten, Bilder, Timing, Chat-Verlauf in der Sidebar, Benutzername, Begrüßung, Spruch, Modellname
-- **Für Aufnahmen optimiert:** vergrößerte Darstellung, dezenter Hintergrund statt leerer Flächen, keine Entwickler-Einblendungen
+- **Für Aufnahmen optimiert:** vergrößerte Darstellung, dezenter Hintergrund statt leerer Flächen, keine Entwickler-Einblendungen, Tab mit App-Name und Logo, eigene Adresse `https://cross-gpt/`
 - **F5 = neuer Take:** Nach dem Neuladen beginnen die Antworten wieder von vorne
 
 ## Starten
@@ -32,6 +32,39 @@ npm run dev
 Dann im Browser öffnen: `http://localhost:3000/?film=aliens`
 Ohne `?film=` wird der Standardfilm aus `src/data/films/index.ts` geladen.
 Läuft auf Port 3000 und kann gleichzeitig mit dem Videoportal (Port 3001) laufen.
+
+### Adresse `cross-gpt` für die Aufnahme
+
+Damit in der Adresszeile nur `cross-gpt` steht, ohne `localhost:3000`, ohne `?film=` und ohne „Nicht sicher“.
+Schritte 1 und 2 sind **pro Computer einmalig**.
+
+1. **Adresse eintragen:** Editor (Notepad) per Rechtsklick → *Als Administrator ausführen* starten,
+   `C:\Windows\System32\drivers\etc\hosts` öffnen (Dateifilter auf *Alle Dateien* stellen) und ganz unten anfügen:
+   ```
+   127.0.0.1 cross-gpt
+   ```
+   Bestehende Zeilen nicht ändern. Bei Docker Desktop die Zeile **nach** `# End of section` einfügen, Docker überschreibt den Bereich davor.
+   Prüfen mit `ping cross-gpt`, Antwort muss von `127.0.0.1` kommen.
+2. **HTTPS-Zertifikat erstellen** mit [mkcert](https://github.com/FiloSottile/mkcert):
+   ```bash
+   winget install FiloSottile.mkcert   # danach neues Terminal öffnen
+   mkcert -install                     # Windows-Abfrage mit „Ja“ bestätigen
+   mkcert -key-file certificates/cross-gpt-key.pem -cert-file certificates/cross-gpt.pem cross-gpt localhost 127.0.0.1
+   ```
+   Danach Chrome komplett schließen und neu öffnen.
+3. **Starten:** `npm run dev:film` statt `npm run dev` (HTTPS auf Port 443).
+   Es kann nur ein Dev-Server pro Projekt laufen, ein laufendes `npm run dev` also vorher mit `Strg+C` beenden.
+4. **Öffnen:** `https://cross-gpt/`. Ohne `?film=` wird der Standardfilm geladen (`defaultFilmId` in `src/data/films/index.ts`).
+   Beim ersten Mal mit `https://` eintippen, sonst sucht Chrome nach „cross-gpt“.
+
+**Zum Zertifikat:**
+
+- `mkcert -install` legt eine eigene, nur auf diesem PC gültige Zertifizierungsstelle in Windows an. Deshalb vertraut Chrome dem Zertifikat und zeigt kein „Nicht sicher“.
+- Die Dateien in `certificates/` sind über `.gitignore` ausgeschlossen und landen nicht auf GitHub. Auf einem anderen PC Schritt 2 wiederholen.
+- Das Zertifikat ist gut zwei Jahre gültig, danach den letzten `mkcert`-Befehl erneut ausführen.
+- Die Datei `rootCA-key.pem` im mkcert-Ordner (`mkcert -CAROOT` zeigt ihn) **nie weitergeben**: Wer sie hat, kann Zertifikate ausstellen, denen dieser PC vertraut.
+- Firefox hat einen eigenen Zertifikatspeicher. Für die Aufnahme Chrome oder Edge verwenden.
+- Startet `dev:film` mit einem Fehler zu Port 443, belegt ein anderes Programm den Port (z.B. ein lokaler Webserver).
 
 ## Neuen Film anlegen
 
@@ -70,6 +103,19 @@ Tipp: Für denselben Film im Videoportal denselben Namen verwenden, dann passt `
 - Vor jedem Take **F5**, danach kurz warten, bevor ins Eingabefeld geklickt wird.
 - Die Gesamtgröße stellt `contentZoom` in `src/components/claude/MainArea.tsx` ein (Standard 1.25).
 - Den Text schneller oder langsamer erscheinen lassen: `timing.wordStreamIntervalMs` in der Film-Datei.
+- Vorgefertigte Prompts schneller oder langsamer tippen lassen: `timing.promptTypingIntervalMs`.
+
+### OBS in 4K
+
+- Einstellungen → **Video:** Basis- und Ausgabeauflösung `3840x2160`. FPS passend zum Schnitt wählen, z.B. `25` oder `30`. 60 ist meist unnötig.
+- Einstellungen → **Ausgabe → Aufnahme:** Aufnahmetyp **Standard** (nicht „Benutzerdefinierte Ausgabe (FFmpeg)“),
+  Kodierer **NVIDIA NVENC HEVC** oder **H.264**, Qualitätsregulierung **CQP 18**, *Ausgabe umskalieren* ausgeschaltet,
+  Format **MKV** oder **Fragmentiertes MP4**.
+- Chrome im Vollbild (F11) per **Bildschirmaufnahme** aufnehmen. Bei Fensteraufnahme die Methode „Windows 10 (1903 und neuer)“ wählen.
+- Ruckelt die Aufnahme (Mauszeiger oder Buchstaben springen), zeigt **Ansicht → Statistiken** die Ursache:
+  *übersprungen wegen Kodierungsverzögerung* = Encoder zu langsam (NVENC verwenden),
+  *verpasst wegen Renderingverzögerung* = Grafikkarte überlastet (OBS als Administrator starten, FPS senken).
+- Hat der Monitor nur HD, kann die Grafikkarte trotzdem in 4K rechnen: NVIDIA **DSR** bzw. AMD **VSR** aktivieren und Windows-Skalierung auf 200 % stellen.
 
 ## Hinweis
 
