@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import type { AssistantMessageContent } from "@/data/films/types";
 import { useFilm } from "./FilmContext";
 
@@ -24,19 +24,22 @@ export function useChat() {
 	const { scriptedResponses, loopWhenDone, timing } = useFilm();
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
 	const [isTyping, setIsTyping] = useState(false);
-	const responseIndex = useRef(0);
+	const [responseIndex, setResponseIndex] = useState(0);
 
 	const pickNextResponse = useCallback((): AssistantMessageContent => {
-		const i = responseIndex.current;
-		if (i < scriptedResponses.length) {
-			responseIndex.current += 1;
-			return scriptedResponses[i];
+		if (responseIndex < scriptedResponses.length) {
+			setResponseIndex(responseIndex + 1);
+			return scriptedResponses[responseIndex];
 		}
 		if (loopWhenDone && scriptedResponses.length > 0) {
 			return scriptedResponses[scriptedResponses.length - 1];
 		}
 		return { text: "..." };
-	}, [scriptedResponses, loopWhenDone]);
+	}, [responseIndex, scriptedResponses, loopWhenDone]);
+
+	// Vorgefertigter Prompt für die nächste Antwort (nur bis zur letzten Antwort,
+	// beim Wiederholen wird nichts mehr vorgetippt).
+	const nextPrompt = scriptedResponses[responseIndex]?.prompt;
 
 	const send = useCallback(
 		(text: string) => {
@@ -145,9 +148,9 @@ export function useChat() {
 
 	const reset = useCallback(() => {
 		setMessages([]);
-		responseIndex.current = 0;
+		setResponseIndex(0);
 		setIsTyping(false);
 	}, []);
 
-	return { messages, isTyping, send, reset };
+	return { messages, isTyping, nextPrompt, send, reset };
 }

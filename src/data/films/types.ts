@@ -4,6 +4,9 @@
 import type { BackgroundId } from "../backgrounds";
 
 export type AssistantMessageContent = {
+	// Optional: vorgefertigter Prompt. Enter im leeren Eingabefeld tippt ihn
+	// "von Hand" ein, ein zweites Enter sendet. Ohne `prompt` tippt die Figur selbst.
+	prompt?: string;
 	text?: string;
 	imageUrl?: string;
 	imageCaption?: string;
@@ -36,6 +39,7 @@ export type Film = {
 		typingDelayMs: number; // Standard-"Denkpause" vor einer Antwort
 		imageGenerationDelayMs: number; // längere Pause, wenn ein Bild dabei ist
 		wordStreamIntervalMs: number; // Pause zwischen zwei Wörtern beim Streaming
+		promptTypingIntervalMs?: number; // mittlere Pause pro Zeichen beim Eintippen eines Prompts (Standard 70)
 	};
 
 	// ---------------------------------------------------------------------

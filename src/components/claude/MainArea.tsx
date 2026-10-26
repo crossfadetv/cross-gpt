@@ -15,7 +15,7 @@ const contentZoom = 1.25;
 
 export function MainArea() {
 	const { appInfo, userProfile, background } = useFilm();
-	const { messages, isTyping, send } = useChat();
+	const { messages, isTyping, nextPrompt, send } = useChat();
 	const hasMessages = messages.length > 0;
 
 	return (
@@ -64,6 +64,7 @@ export function MainArea() {
 					>
 						<ChatInput
 							onSend={send}
+							scriptedPrompt={nextPrompt}
 							placeholder="Antwort an CrossGPT ..."
 							disabled={isTyping}
 						/>
@@ -102,7 +103,7 @@ export function MainArea() {
 							)}
 						</VStack>
 
-						<ChatInput onSend={send} />
+						<ChatInput onSend={send} scriptedPrompt={nextPrompt} />
 
 						<QuickActions />
 					</VStack>

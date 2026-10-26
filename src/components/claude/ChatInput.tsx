@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Flex, HStack, Icon, Textarea } from "@chakra-ui/react";
-import { type KeyboardEvent, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
 	LuArrowUp,
 	LuAudioLines,
@@ -13,21 +13,59 @@ import { useFilm } from "./FilmContext";
 
 type Props = {
 	onSend: (text: string) => void;
+	// Vorgefertigter Prompt: Enter im leeren Feld tippt ihn Zeichen für Zeichen ein.
+	scriptedPrompt?: string;
 	placeholder?: string;
 	disabled?: boolean;
 };
 
+// Pause vor dem nächsten Zeichen. Schwankt zufällig und ist nach Wörtern
+// und Satzzeichen länger, damit es wie ein Mensch am Keyboard wirkt.
+function humanKeyDelay(prevChar: string, baseMs: number) {
+	let delay = baseMs * (0.5 + Math.random());
+	if (prevChar === " ") delay += baseMs * 0.8;
+	if (/[.,!?;:]/.test(prevChar)) delay += baseMs * 3;
+	if (Math.random() < 0.03) delay += baseMs * 6; // kurz überlegen
+	return delay;
+}
+
 export function ChatInput({
 	onSend,
+	scriptedPrompt,
 	placeholder = "Wie kann ich dir heute helfen?",
 	disabled,
 }: Props) {
-	const { appInfo } = useFilm();
+	const { appInfo, timing } = useFilm();
 	const [value, setValue] = useState("");
+	const [autoTyping, setAutoTyping] = useState(false);
+	const typingTimer = useRef<number | undefined>(undefined);
+
+	useEffect(() => () => window.clearTimeout(typingTimer.current), []);
+
+	const typePrompt = (prompt: string) => {
+		const baseMs = timing.promptTypingIntervalMs ?? 70;
+		let i = 0;
+		setAutoTyping(true);
+
+		const tick = () => {
+			i += 1;
+			setValue(prompt.slice(0, i));
+			if (i >= prompt.length) {
+				setAutoTyping(false);
+				return;
+			}
+			typingTimer.current = window.setTimeout(
+				tick,
+				humanKeyDelay(prompt[i - 1], baseMs),
+			);
+		};
+
+		typingTimer.current = window.setTimeout(tick, baseMs);
+	};
 
 	const submit = () => {
 		const text = value.trim();
-		if (!text || disabled) return;
+		if (!text || disabled || autoTyping) return;
 		onSend(text);
 		setValue("");
 	};
@@ -35,6 +73,11 @@ export function ChatInput({
 	const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault();
+			if (autoTyping) return;
+			if (!value.trim() && scriptedPrompt && !disabled) {
+				typePrompt(scriptedPrompt);
+				return;
+			}
 			submit();
 		}
 	};
@@ -54,6 +97,7 @@ export function ChatInput({
 			<Textarea
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
+				readOnly={autoTyping}
 				onKeyDown={onKeyDown}
 				placeholder={placeholder}
 				variant="outline"
@@ -68,6 +112,8 @@ export function ChatInput({
 				p="0"
 				mb="3"
 				rows={1}
+				// Feld wächst mit dem Text (bis maxH), damit lange Prompts sichtbar bleiben.
+				css={{ fieldSizing: "content" }}
 				_focus={{ boxShadow: "none", outline: "none" }}
 				_placeholder={{ color: "gray.500" }}
 			/>
